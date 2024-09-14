@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:miftahprintapp/controller/controller.dart';
 import 'package:miftahprintapp/models/user.dart';
+import 'package:miftahprintapp/screens/home_page.dart';
 import 'package:miftahprintapp/widgets/button.dart';
 import 'package:miftahprintapp/widgets/input_text.dart';
 import 'package:miftahprintapp/api_connection/api_connection.dart';
@@ -17,56 +18,54 @@ class SignupPage extends StatelessWidget {
   validateUserEmail() async {
     try {
       var response = await http.post(
-        Uri.parse(API.validatEmail),
+        Uri.parse(API.validateEmail),
         body: {"user_email": controller.emailController.text},
       );
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
         if (responseBody['emailFound']) {
-          Get.snackbar("Error", "Email already is in use");
+          Get.snackbar("Error 1", "Email already is in use");
         } else {
           saveUserData();
         }
       }
-
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      Get.snackbar("Error 0", e.toString());
     }
   }
 
-  saveUserData() async{
+  saveUserData() async {
     User userModel = User(
       1,
-      controller.nameController.text,
+      controller.fullNameController.text,
       controller.emailController.text,
       controller.passwordController.text,
     );
 
-    try{
-      var response = await http.post(Uri.parse(API.signUp),
-      body: userModel.toJson()
-      );
+    try {
+      var response =
+          await http.post(Uri.parse(API.signUp), body: userModel.toJson());
 
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
         if (responseBody['success']) {
           Get.snackbar("Done", "Account created successfully");
+          controller.clearInput();
         } else {
-          Get.snackbar("Error", "Some error occurred");
+          Get.snackbar("Error 1", "Some error occurred");
         }
       }
-
-
-    }
-
-    catch(e){
-      Get.snackbar("Error", e.toString());
+    } catch (e) {
+      Get.snackbar("Error 2", e.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Center(child: Text("Register")),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
@@ -80,7 +79,7 @@ class SignupPage extends StatelessWidget {
             ),
             InputText(
               hint: "Full Name",
-              controller: controller.nameController,
+              controller: controller.fullNameController,
               icon: const Icon(Icons.person),
             ),
             InputText(
@@ -97,7 +96,10 @@ class SignupPage extends StatelessWidget {
               height: 20,
             ),
             Button(
-              onPressed: validateUserEmail,
+              onPressed: () {
+                validateUserEmail();
+                Get.to(HomePage());
+              },
               buttonText: "Register",
             ),
           ],

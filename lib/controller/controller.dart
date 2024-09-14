@@ -21,4 +21,9 @@ class Controller extends GetxController {
     // Update the reactive result value
     result.value = "Total cost: ৳${totalCost.toStringAsFixed(2)}";
   }
+  void clearInput(){
+    fullNameController.clear();
+    emailController.clear();
+    passwordController.clear();
+  }
 }

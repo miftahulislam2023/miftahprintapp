@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:miftahprintapp/controller/controller.dart';
 import 'package:miftahprintapp/screens/home_page.dart';
 import 'package:miftahprintapp/screens/login_page.dart';
 import 'package:miftahprintapp/screens/memo.dart';
 import 'package:miftahprintapp/screens/signup_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
